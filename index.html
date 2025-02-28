@@ -28,172 +28,188 @@
 </head>
 
 <body>
+    <div class="container py-3 d-flex flex-column gap-3">
 
-    <div class="chart-container w-100">
-        <canvas id="chart1"></canvas>
-    </div>
+        <div class="card shadow">
+            <h5 class="card-header">Main index</h5>
+            <div class="card-body">
+                <div class="chart-container w-100">
+                    <canvas id="chart1"></canvas>
+                </div>
+            </div>
+        </div>
 
-    <div class="chart-container w-100">
-        <canvas id="chart2"></canvas>
-    </div>
+        <div class="card shadow">
+            <h5 class="card-header">First pair</h5>
+            <div class="card-body">
+                <div class="chart-container w-100">
+                    <canvas id="chart2"></canvas>
+                </div>
+            </div>
+        </div>
 
-    <div class="chart-container w-100">
-        <canvas id="chart3"></canvas>
-    </div>
+        <div class="card shadow">
+            <h5 class="card-header">Second pair</h5>
+            <div class="card-body">
+                <div class="chart-container w-100">
+                    <canvas id="chart3"></canvas>
+                </div>
+            </div>
+        </div>
 
-    <script>
-        async function fetchData() {
-            try {
-                const response = await fetch('/xmrvnd-view/data.json');
-                const data = await response.json();
-                return data;
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                return null;
+        <script>
+            async function fetchData() {
+                try {
+                    const response = await fetch('/data.json');
+                    const data = await response.json();
+                    return data;
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                    return null;
+                }
             }
-        }
 
-        async function createCharts() {
-            const data = await fetchData();
-            if (!data) return;
-            console.log(data);
+            async function createCharts() {
+                const data = await fetchData();
+                if (!data) return;
 
-            const timestamps = data.map(item => new Date(item.timestamp));
-            const xmr_btc_vnd = data.map(item => item.xmr_btc_vnd);
-            const xmr_eth_vnd = data.map(item => item.xmr_eth_vnd);
-            const xmr_btc = data.map(item => item.xmr_btc);
-            const xmr_eth = data.map(item => item.xmr_eth);
-            const btcvnd_bid = data.map(item => item.btcvnd_bid);
-            const ethvnd_bid = data.map(item => item.ethvnd_bid);
+                const timestamps = data.map(item => new Date(item.timestamp));
+                const xmr_btc_vnd = data.map(item => item.xmr_btc_vnd);
+                const xmr_eth_vnd = data.map(item => item.xmr_eth_vnd);
+                const xmr_btc = data.map(item => item.xmr_btc);
+                const xmr_eth = data.map(item => item.xmr_eth);
+                const btcvnd_bid = data.map(item => item.btcvnd_bid);
+                const ethvnd_bid = data.map(item => item.ethvnd_bid);
 
-            new Chart(document.getElementById('chart1'), {
-                type: 'line',
-                data: {
-                    labels: timestamps,
-                    datasets: [{
-                        label: 'XMR BTC VND',
-                        data: xmr_btc_vnd,
-                        borderColor: 'blue',
-                        fill: false
-                    }, {
-                        label: 'XMR ETH VND',
-                        data: xmr_eth_vnd,
-                        borderColor: 'red',
-                        fill: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            type: 'time',
-                            time: {
-                                unit: 'minute',
-                                displayFormats: {
-                                    minute: 'HH:mm', // Display time in hours and minutes
+                new Chart(document.getElementById('chart1'), {
+                    type: 'line',
+                    data: {
+                        labels: timestamps,
+                        datasets: [{
+                            label: 'XMR BTC VND',
+                            data: xmr_btc_vnd,
+                            borderColor: 'blue',
+                            fill: false
+                        }, {
+                            label: 'XMR ETH VND',
+                            data: xmr_eth_vnd,
+                            borderColor: 'red',
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                    unit: 'minute',
+                                    displayFormats: {
+                                        minute: 'HH:mm', // Display time in hours and minutes
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            });
+                });
 
-            new Chart(document.getElementById('chart2'), {
-                type: 'line',
-                data: {
-                    labels: timestamps,
-                    datasets: [{
-                        label: 'XMR BTC',
-                        data: xmr_btc,
-                        borderColor: 'green',
-                        fill: false,
-                        yAxisID: 'btc'
-                    }, {
-                        label: 'XMR ETH',
-                        data: xmr_eth,
-                        borderColor: 'orange',
-                        fill: false,
-                        yAxisID: 'eth'
-                    }]
-                },
-                options: {
+                new Chart(document.getElementById('chart2'), {
+                    type: 'line',
+                    data: {
+                        labels: timestamps,
+                        datasets: [{
+                            label: 'XMR BTC',
+                            data: xmr_btc,
+                            borderColor: 'green',
+                            fill: false,
+                            yAxisID: 'btc'
+                        }, {
+                            label: 'XMR ETH',
+                            data: xmr_eth,
+                            borderColor: 'orange',
+                            fill: false,
+                            yAxisID: 'eth'
+                        }]
+                    },
+                    options: {
 
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            type: 'time',
-                            time: {
-                                unit: 'minute',
-                                displayFormats: {
-                                    minute: 'HH:mm', // Display time in hours and minutes
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                    unit: 'minute',
+                                    displayFormats: {
+                                        minute: 'HH:mm', // Display time in hours and minutes
+                                    }
                                 }
+                            },
+                            'btc': {
+                                type: 'linear',
+                                position: 'left',
+                                text: 'BTC'
+                            },
+                            'eth': {
+                                type: 'linear',
+                                position: 'right',
+                                text: 'ETH'
                             }
-                        },
-                        'btc': {
-                            type: 'linear',
-                            position: 'left',
-                            text: 'BTC'
-                        },
-                        'eth': {
-                            type: 'linear',
-                            position: 'right',
-                            text: 'ETH'
                         }
                     }
-                }
-            });
+                });
 
-            new Chart(document.getElementById('chart3'), {
-                type: 'line',
-                data: {
-                    labels: timestamps,
-                    datasets: [{
-                        label: 'BTC VND',
-                        data: btcvnd_bid,
-                        borderColor: 'purple',
-                        fill: false,
-                        yAxisID: 'btc'
-                    }, {
-                        label: 'ETH VND',
-                        data: ethvnd_bid,
-                        borderColor: 'brown',
-                        fill: false,
-                        yAxisID: 'eth'
-                    }]
-                },
-                options: {
+                new Chart(document.getElementById('chart3'), {
+                    type: 'line',
+                    data: {
+                        labels: timestamps,
+                        datasets: [{
+                            label: 'BTC VND',
+                            data: btcvnd_bid,
+                            borderColor: 'purple',
+                            fill: false,
+                            yAxisID: 'btc'
+                        }, {
+                            label: 'ETH VND',
+                            data: ethvnd_bid,
+                            borderColor: 'brown',
+                            fill: false,
+                            yAxisID: 'eth'
+                        }]
+                    },
+                    options: {
 
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            type: 'time',
-                            time: {
-                                unit: 'minute',
-                                displayFormats: {
-                                    minute: 'HH:mm', // Display time in hours and minutes
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                    unit: 'minute',
+                                    displayFormats: {
+                                        minute: 'HH:mm', // Display time in hours and minutes
+                                    }
                                 }
+                            },
+                            'btc': {
+                                type: 'linear',
+                                position: 'left',
+                                text: 'BTC'
+                            },
+                            'eth': {
+                                type: 'linear',
+                                position: 'right',
+                                text: 'ETH'
                             }
-                        },
-                        'btc': {
-                            type: 'linear',
-                            position: 'left',
-                            text: 'BTC'
-                        },
-                        'eth': {
-                            type: 'linear',
-                            position: 'right',
-                            text: 'ETH'
                         }
                     }
-                }
-            });
-        }
+                });
+            }
 
-        createCharts();
-    </script>
+            createCharts();
+        </script>
+    </div>
 </body>
 
 </html>
